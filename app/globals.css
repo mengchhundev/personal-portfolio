@@ -3,15 +3,13 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  --foreground-rgb: 17, 24, 39;
+  --background-rgb: 255, 255, 255;
 }
 
 .dark {
-  --foreground-rgb: 255, 255, 255;
-  --background-start-rgb: 0, 0, 0;
-  --background-end-rgb: 0, 0, 0;
+  --foreground-rgb: 243, 244, 246;
+  --background-rgb: 17, 24, 39;
 }
 
 * {
@@ -20,68 +18,153 @@
   margin: 0;
 }
 
+/* Skip link - for keyboard/screen reader users */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 0.5rem;
+  z-index: 100;
+  padding: 0.75rem 1.25rem;
+  background: linear-gradient(135deg, #059669, #0d9488);
+  color: white;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 14px rgba(5, 150, 105, 0.4);
+  transition: top 0.2s ease;
+}
+.skip-link:focus {
+  top: 4rem;
+  outline: 2px solid #0d9488;
+  outline-offset: 2px;
+}
+
+/* Focus visible - keyboard users only (not mouse click) */
+:focus {
+  outline: none;
+}
+:focus-visible {
+  outline: 2px solid #0d9488;
+  outline-offset: 2px;
+}
+button:focus-visible,
+a:focus-visible,
+[role="button"]:focus-visible {
+  outline: 2px solid #0d9488;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
 html {
   scroll-behavior: smooth;
 }
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background: rgb(var(--background-rgb));
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Gradient backgrounds */
+/* Clean section backgrounds (white theme) */
 .gradient-bg {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #ffffff;
 }
 
 .dark .gradient-bg {
-  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  background: rgb(17, 24, 39);
 }
 
 .gradient-bg-light {
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  background: #fafafa;
 }
 
 .dark .gradient-bg-light {
-  background: linear-gradient(135deg, #4c1d95 0%, #7c3aed 100%);
+  background: rgb(30, 41, 59);
 }
 
 .gradient-bg-section {
-  background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+  background: #f9fafb;
 }
 
 .dark .gradient-bg-section {
-  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  background: rgb(30, 41, 59);
 }
 
-/* Custom scrollbar */
+/* Custom scrollbar - clean */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: #f1f5f9;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 5px;
+  background: #cbd5e1;
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background: #94a3b8;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: #1e293b;
 }
 
 .dark ::-webkit-scrollbar-thumb {
-  background: #444;
+  background: #475569;
 }
 
 .dark ::-webkit-scrollbar-thumb:hover {
-  background: #666;
+  background: #64748b;
+}
+
+/* Scroll progress bar - DevOps: automation → containers → cloud */
+.scroll-progress {
+  height: 3px;
+  background: linear-gradient(90deg, #059669, #0d9488, #2563eb);
+  transform-origin: left;
+  will-change: transform;
+}
+
+/* Glass panel */
+.glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+.dark .glass {
+  background: rgba(17, 24, 39, 0.7);
+}
+
+/* Gradient text - DevOps: emerald → teal → blue */
+.gradient-text {
+  background: linear-gradient(135deg, #059669 0%, #0d9488 50%, #2563eb 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Subtle grain overlay - modern depth */
+.hero-grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.035;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+}
+.dark .hero-grain {
+  opacity: 0.06;
 }

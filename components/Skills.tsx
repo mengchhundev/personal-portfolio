@@ -1,31 +1,99 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import Image from 'next/image'
 
-// Helper function to get logo path for a skill
 const getSkillLogo = (skillName: string): string | null => {
   const logoMap: { [key: string]: string } = {
+    // DevOps
     'Linux': '/assets/logo/linux-1024.png',
     'K8s': '/assets/logo/Kubernetes-Logo.wine.png',
     'Kubernetes': '/assets/logo/Kubernetes-Logo.wine.png',
     'ArgoCD': '/assets/logo/argocd-icon.png',
+    'Docker': '/assets/logo/docker-logo.png',
+    'GitHub': '/assets/logo/github-logo.svg',
+    'GitLab': '/assets/logo/gitlab-logo.png',
+    'Nexus': '/assets/logo/nexus-logo.png',
+    'GCP': '/assets/logo/gcp-logo.png',
+    'Jenkins': '/assets/logo/Jenkins-logo.png',
+    'SonarQube': '/assets/logo/sonarqube-logo.png',
+    'Ansible': '/assets/logo/ansible-logo.png',
+    'Shell script': '/assets/logo/shell-script-logo.png',
+    // Work Experience
+    'Spring Boot': '/assets/logo/work-experience/spring-boot-logo.svg.png',
+    'PostgreSQL': '/assets/logo/work-experience/postgresql-logo.png',
+    'Next.js': '/assets/logo/work-experience/next-js-logo.png',
+    'TypeScript': '/assets/logo/work-experience/typescript-logo.png',
+    'JavaScript': '/assets/logo/work-experience/javascript-logo.png',
+    'Jasper Report': '/assets/logo/work-experience/jaspersoft-logo.svg',
+    // Korean Software HRD Center (kshrd)
+    'Java': '/assets/logo/kshrd/Java-Logo.png',
+    'React.js': '/assets/logo/kshrd/react-logo.png',
+    'HTML': '/assets/logo/kshrd/html-logo.png',
+    'CSS': '/assets/logo/kshrd/css-logo.png',
+    'Android': '/assets/logo/kshrd/android-logo.png',
   }
-  
-  // Try exact match first
-  if (logoMap[skillName]) {
-    return logoMap[skillName]
-  }
-  
-  // Try case-insensitive match
+  if (logoMap[skillName]) return logoMap[skillName]
   const lowerSkill = skillName.toLowerCase()
   for (const [key, value] of Object.entries(logoMap)) {
-    if (key.toLowerCase() === lowerSkill) {
-      return value
-    }
+    if (key.toLowerCase() === lowerSkill) return value
   }
-  
   return null
+}
+
+const getSkillLogoScale = (skillName: string): number => {
+  const scaleMap: { [key: string]: number } = {
+    // DevOps
+    'Jenkins': 1.65,
+    'K8s': 1.8,
+    'Kubernetes': 1.8,
+    'SonarQube': 1.1,
+    'Docker': 1.2,
+    'Shell script': 1.35,
+    'GCP': 1.3,
+    // Work Experience
+    'Spring Boot': 1,
+    'PostgreSQL': 1.3,
+    'Next.js': 1,
+    'TypeScript': 1.1,
+    'JavaScript': 2,
+    'Jasper Report': 1,
+    // Korean Software HRD Center (kshrd)
+    'Java': 2,
+    'React.js': 1,
+    'HTML': 1.1,
+    'CSS': 1.1,
+    'Android': 1.3,
+  }
+  return scaleMap[skillName] ?? 1
+}
+
+const skillDefinitions: { [key: string]: string } = {
+  'Linux': 'Open-source operating system kernel and ecosystem for servers and development.',
+  'Shell script': 'Scripting for task automation, CLI tools, and system administration.',
+  'Docker': 'Containerization platform to build, ship, and run applications in containers.',
+  'GitHub': 'Code hosting platform for version control, collaboration, and CI/CD.',
+  'GitLab': 'DevOps lifecycle tool for version control, CI/CD, and collaboration.',
+  'Nexus': 'Repository manager for storing and distributing build artifacts and dependencies.',
+  'GCP': 'Google Cloud Platform — cloud computing services for infrastructure and apps.',
+  'Jenkins': 'Open-source automation server for CI/CD pipelines and continuous delivery.',
+  'SonarQube': 'Static analysis tool for code quality, security, and technical debt.',
+  'Ansible': 'Configuration management and automation for deployment and orchestration.',
+  'K8s': 'Kubernetes — container orchestration platform for deploying and scaling apps.',
+  'Kubernetes': 'Container orchestration platform for automating deployment and scaling.',
+  'ArgoCD': 'Declarative GitOps continuous delivery tool for Kubernetes.',
+  'Spring Boot': 'Java framework for building production-ready applications and microservices.',
+  'PostgreSQL': 'Open-source relational database with advanced features and reliability.',
+  'Next.js': 'React framework for production with SSR, static generation, and API routes.',
+  'TypeScript': 'Typed superset of JavaScript for safer and more maintainable code.',
+  'JavaScript': 'Programming language for web development and runtime environments.',
+  'Jasper Report': 'Java library for creating reports, documents, and dashboards.',
+  'Java': 'Object-oriented programming language for enterprise and Android development.',
+  'React.js': 'JavaScript library for building user interfaces and single-page applications.',
+  'HTML': 'Markup language for structuring content on the web.',
+  'CSS': 'Style sheet language for layout, theming, and responsive design.',
+  'Android': 'Mobile operating system and platform for building mobile applications.',
 }
 
 const skillCategories = [
@@ -45,7 +113,7 @@ const skillCategories = [
       "K8s",
       "ArgoCD",
     ],
-    color: "from-green-500 to-blue-500",
+    color: "from-emerald-500 to-teal-500",
   },
   {
     title: "Work Experience",
@@ -57,7 +125,7 @@ const skillCategories = [
       "JavaScript",
       "Jasper Report",
     ],
-    color: "from-purple-500 to-pink-500",
+    color: "from-teal-500 to-blue-500",
   },
   {
     title: "Korean Software HRD Center",
@@ -70,92 +138,241 @@ const skillCategories = [
       "CSS",
       "Android",
     ],
-    color: "from-orange-500 to-red-500",
+    color: "from-amber-500 to-orange-500",
   },
 ]
 
+const TAB_OPTIONS = ['All', 'DevOps', 'Work', 'HRD'] as const
+const TAB_MAP = { All: -1, DevOps: 0, Work: 1, HRD: 2 } as const
+
+/** 3D floating shapes for Skills section background */
+function Skills3DBackground() {
+  return (
+    <div
+      className="absolute inset-0 overflow-hidden pointer-events-none"
+      style={{ perspective: '1200px' }}
+      aria-hidden
+    >
+      <div className="absolute inset-0">
+        <motion.div
+          className="absolute bottom-[18%] left-[8%] w-24 h-24 sm:w-32 sm:h-32"
+          style={{ perspective: '1200px', transformStyle: 'preserve-3d' }}
+          animate={{ rotateY: [0, -360], rotateX: [0, 10, 0] }}
+          transition={{
+            rotateY: { duration: 26, repeat: Infinity, ease: 'linear' },
+            rotateX: { duration: 8, repeat: Infinity, ease: 'easeInOut' },
+          }}
+        >
+          <div className="w-full h-full relative" style={{ transformStyle: 'preserve-3d' }}>
+            {['front', 'back', 'right', 'left', 'top', 'bottom'].map((face) => (
+              <div
+                key={face}
+                className="absolute inset-0 border-2 border-teal-300/20 dark:border-teal-500/15 rounded-lg bg-teal-400/5 dark:bg-teal-500/5"
+                style={{
+                  transformStyle: 'preserve-3d',
+                  transform:
+                    face === 'front' ? 'translateZ(0.75rem)' :
+                    face === 'back' ? 'rotateY(180deg) translateZ(0.75rem)' :
+                    face === 'right' ? 'rotateY(90deg) translateZ(0.75rem)' :
+                    face === 'left' ? 'rotateY(-90deg) translateZ(0.75rem)' :
+                    face === 'top' ? 'rotateX(90deg) translateZ(0.75rem)' :
+                    'rotateX(-90deg) translateZ(0.75rem)',
+                }}
+              />
+            ))}
+          </div>
+        </motion.div>
+        <motion.div
+          className="absolute top-[22%] right-[10%] w-16 h-16 sm:w-20 sm:h-20 rounded-full border-2 border-teal-300/20 dark:border-teal-500/15 bg-teal-400/10 dark:bg-teal-500/10 blur-[1px]"
+          animate={{ scale: [1, 1.1, 1], opacity: [0.4, 0.65, 0.4] }}
+          transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
+        />
+      </div>
+    </div>
+  )
+}
+
 export default function Skills() {
+  const [hoveredKey, setHoveredKey] = useState<string | null>(null)
+  const [activeTab, setActiveTab] = useState<typeof TAB_OPTIONS[number]>('All')
+
+  const categoriesToShow =
+    activeTab === 'All'
+      ? skillCategories
+      : [skillCategories[TAB_MAP[activeTab]]]
+
   return (
     <section
       id="skills"
-      className="py-20 px-4 sm:px-6 lg:px-8 gradient-bg-light"
+      className="relative py-20 sm:py-28 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-slate-50/60 via-white to-teal-50/40 dark:from-gray-950 dark:via-gray-900/80 dark:to-gray-950 overflow-hidden"
+      aria-labelledby="skills-heading"
     >
-      <div className="max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
+      <Skills3DBackground />
+
+      <div className="relative z-10 max-w-5xl mx-auto">
+        <motion.header
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-12"
+          transition={{ duration: 0.5 }}
+          className="mb-12 sm:mb-16 text-center sm:text-left"
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-pink-600 to-orange-600 bg-clip-text text-transparent">
+          <h2
+            id="skills-heading"
+            className="text-3xl sm:text-4xl font-semibold tracking-tight text-gray-900 dark:text-white mb-3"
+          >
             Skills
           </h2>
-          <p className="text-gray-600 dark:text-gray-400 text-lg">
+          <p className="text-base text-gray-500 dark:text-gray-400 max-w-xl">
             Technologies and tools I work with
           </p>
-        </motion.div>
+        </motion.header>
 
-        <div className="grid md:grid-cols-3 gap-8">
-          {skillCategories.map((category, categoryIndex) => (
-            <motion.div
-              key={categoryIndex}
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: categoryIndex * 0.2 }}
-              className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-md rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300"
+        <motion.nav
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="flex flex-wrap justify-center sm:justify-start gap-2 mb-10"
+          aria-label="Skill categories"
+        >
+          {TAB_OPTIONS.map((tab) => (
+            <motion.button
+              key={tab}
+              type="button"
+              onClick={() => setActiveTab(tab)}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className={`relative px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                activeTab === tab
+                  ? 'text-white'
+                  : 'text-gray-600 dark:text-gray-400 hover:text-teal-600 dark:hover:text-teal-400 bg-white dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 hover:border-teal-200 dark:hover:border-teal-800'
+              }`}
+              aria-pressed={activeTab === tab}
+              aria-label={`Show ${tab} skills`}
             >
-              <h3 className="text-xl font-bold mb-6 text-gray-800 dark:text-gray-200 text-center">
-                {category.title}
-              </h3>
-              <div className="flex flex-wrap gap-4 justify-center">
-                {category.skills.map((skill, skillIndex) => {
-                  const logoPath = getSkillLogo(skill)
-                  
-                  return (
-                    <motion.div
-                      key={skillIndex}
-                      initial={{ opacity: 0, scale: 0 }}
-                      whileInView={{ opacity: 1, scale: 1 }}
-                      viewport={{ once: true }}
-                      transition={{
-                        duration: 0.3,
-                        delay: categoryIndex * 0.2 + skillIndex * 0.05,
-                      }}
-                      whileHover={{ scale: 1.15, y: -5 }}
-                      className="group relative"
-                    >
-                      {logoPath ? (
-                        <div className="w-20 h-20 bg-white dark:bg-gray-700 rounded-xl p-3 shadow-lg hover:shadow-2xl transition-all duration-300 flex items-center justify-center border-2 border-transparent hover:border-purple-400 dark:hover:border-purple-500">
-                          <Image
-                            src={logoPath}
-                            alt={skill}
-                            width={64}
-                            height={64}
-                            className="object-contain w-full h-full"
-                            title={skill}
-                          />
-                        </div>
-                      ) : (
-                        <div className={`px-4 py-2 bg-gradient-to-r ${category.color} text-white rounded-full text-sm font-semibold shadow-md hover:shadow-lg transition-all cursor-default`}>
-                          {skill}
-                        </div>
-                      )}
-                      <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-                        <div className="bg-gray-900 dark:bg-gray-700 text-white text-xs px-2 py-1 rounded whitespace-nowrap">
-                          {skill}
-                        </div>
-                      </div>
-                    </motion.div>
-                  )
-                })}
-              </div>
-            </motion.div>
+              {activeTab === tab && (
+                <motion.span
+                  layoutId="skills-tab"
+                  className="absolute inset-0 bg-teal-500 dark:bg-teal-600 rounded-lg -z-10"
+                  transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                />
+              )}
+              {tab}
+            </motion.button>
           ))}
+        </motion.nav>
+
+        <div
+          className={`grid gap-6 sm:gap-8 ${
+            categoriesToShow.length === 1
+              ? 'max-w-2xl mx-auto'
+              : 'md:grid-cols-3'
+          }`}
+        >
+          {categoriesToShow.map((category, categoryIndex) => {
+            const globalCategoryIndex = activeTab === 'All' ? categoryIndex : TAB_MAP[activeTab]
+            const isPopoverOpen = hoveredKey !== null && hoveredKey.startsWith(`${globalCategoryIndex}-`)
+            return (
+              <motion.article
+                key={activeTab + categoryIndex}
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: categoryIndex * 0.08 }}
+                className={`relative rounded-2xl border border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-900/30 p-6 sm:p-8 transition-colors hover:border-gray-200 dark:hover:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-900/50 ${isPopoverOpen ? 'z-10' : ''}`}
+              >
+                <h3 className="text-xl sm:text-2xl font-semibold text-gray-900 dark:text-white mb-6 text-center tracking-tight">
+                  {category.title}
+                </h3>
+                <div className="flex flex-wrap gap-3 sm:gap-4 justify-center">
+                  {category.skills.map((skill, skillIndex) => {
+                    const logoPath = getSkillLogo(skill)
+                    const logoScale = logoPath ? getSkillLogoScale(skill) : 1
+                    const tooltipKey = `${globalCategoryIndex}-${skillIndex}`
+
+                    return (
+                      <motion.div
+                        key={skillIndex}
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        viewport={{ once: true }}
+                        transition={{
+                          duration: 0.3,
+                          delay: categoryIndex * 0.15 + skillIndex * 0.04,
+                        }}
+                        whileHover={{ scale: 1.08, y: -4 }}
+                        className="group relative w-fit shrink-0"
+                        onHoverStart={() => setHoveredKey(tooltipKey)}
+                        onHoverEnd={() => setHoveredKey(null)}
+                      >
+                        {logoPath ? (
+                          <div className="w-16 h-16 sm:w-[72px] sm:h-[72px] min-w-16 min-h-16 sm:min-w-[72px] sm:min-h-[72px] bg-white dark:bg-gray-800/80 rounded-xl p-2 border border-gray-100 dark:border-gray-700 flex items-center justify-center hover:border-teal-300 dark:hover:border-teal-600 transition-colors shadow-sm">
+                            <div className="w-10 h-10 sm:w-12 sm:h-12 min-w-10 min-h-10 sm:min-w-12 sm:min-h-12 flex items-center justify-center overflow-hidden">
+                              <div
+                                className="flex items-center justify-center w-full h-full"
+                                style={{ transform: `scale(${logoScale})` }}
+                              >
+                                <Image
+                                  src={logoPath}
+                                  alt={skill}
+                                  width={192}
+                                  height={192}
+                                  className="object-contain max-w-full max-h-full w-full h-full"
+                                  title=""
+                                  unoptimized={logoPath.endsWith('.svg')}
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        ) : (
+                          <div className={`px-3.5 py-2 sm:px-4 sm:py-2.5 bg-gradient-to-r ${category.color} text-white rounded-xl text-sm font-semibold shadow-sm hover:shadow transition-all cursor-default`}>
+                            {skill}
+                          </div>
+                        )}
+                        <AnimatePresence>
+                          {hoveredKey === tooltipKey && (
+                            <motion.div
+                              initial={{ opacity: 0, y: 6, scale: 0.96 }}
+                              animate={{ opacity: 1, y: 0, scale: 1 }}
+                              exit={{ opacity: 0, y: 4, scale: 0.98 }}
+                              transition={{ duration: 0.18, ease: [0.25, 0.46, 0.45, 0.94] }}
+                              className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 z-20 pointer-events-none w-64 sm:w-72 origin-bottom"
+                            >
+                              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl ring-1 ring-gray-200 dark:ring-gray-700 overflow-visible">
+                                <div className="p-4">
+                                  <div className="flex items-center gap-3 mb-3">
+                                    {logoPath && (
+                                      <div className="w-10 h-10 flex-shrink-0 rounded-lg bg-gray-100 dark:bg-gray-700 flex items-center justify-center overflow-hidden">
+                                        <Image
+                                          src={logoPath}
+                                          alt=""
+                                          width={40}
+                                          height={40}
+                                          className="object-contain w-full h-full"
+                                          unoptimized={logoPath.endsWith('.svg')}
+                                        />
+                                      </div>
+                                    )}
+                                    <h4 className="font-semibold text-gray-900 dark:text-white text-sm sm:text-base">
+                                      {skill}
+                                    </h4>
+                                  </div>
+                                  <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                                    {skillDefinitions[skill] ?? `${skill} — technology or tool.`}
+                                  </p>
+                                </div>
+                              </div>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </motion.div>
+                    )
+                  })}
+                </div>
+              </motion.article>
+            )
+          })}
         </div>
       </div>
     </section>
   )
 }
-

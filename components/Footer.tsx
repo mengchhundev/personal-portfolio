@@ -4,8 +4,9 @@ import { motion } from 'framer-motion'
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-900 dark:bg-black text-white py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
+    <footer className="relative overflow-hidden border-t border-slate-200/50 dark:border-gray-800 bg-slate-100/80 dark:bg-gray-900/80 backdrop-blur-sm text-slate-900 dark:text-white py-16 px-4 sm:px-6 lg:px-8">
+      <div className="absolute inset-0 bg-gradient-mesh opacity-50 pointer-events-none" />
+      <div className="relative max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -13,20 +14,20 @@ export default function Footer() {
           transition={{ duration: 0.6 }}
           className="text-center"
         >
-          <h3 className="text-2xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-            Let's Connect
+          <h3 className="text-2xl font-bold mb-4 bg-gradient-to-r from-emerald-600 via-teal-600 to-blue-600 bg-clip-text text-transparent dark:from-emerald-400 dark:via-teal-400 dark:to-blue-400">
+            Let&apos;s Connect
           </h3>
-          <p className="text-gray-400 mb-6">
+          <p className="text-slate-600 dark:text-gray-400 mb-8">
             Open to opportunities and collaborations
           </p>
-          <div className="flex justify-center space-x-6 mb-8">
+          <div className="flex justify-center gap-6 mb-10">
             <motion.a
-              whileHover={{ scale: 1.2, rotate: 5 }}
-              whileTap={{ scale: 0.9 }}
+              whileHover={{ scale: 1.15, y: -4 }}
+              whileTap={{ scale: 0.95 }}
               href="https://github.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-400 hover:text-white transition-colors"
+              className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-slate-200/50 dark:border-gray-700 text-slate-600 dark:text-gray-400 hover:text-teal-600 dark:hover:text-teal-400 hover:border-teal-300 dark:hover:border-teal-500 hover:shadow-glow-sm transition-all"
               aria-label="GitHub"
             >
               <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
@@ -34,12 +35,12 @@ export default function Footer() {
               </svg>
             </motion.a>
             <motion.a
-              whileHover={{ scale: 1.2, rotate: -5 }}
-              whileTap={{ scale: 0.9 }}
+              whileHover={{ scale: 1.15, y: -4 }}
+              whileTap={{ scale: 0.95 }}
               href="https://linkedin.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-400 hover:text-white transition-colors"
+              className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-slate-200/50 dark:border-gray-700 text-slate-600 dark:text-gray-400 hover:text-teal-600 dark:hover:text-teal-400 hover:border-teal-300 dark:hover:border-teal-500 hover:shadow-glow-sm transition-all"
               aria-label="LinkedIn"
             >
               <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
@@ -47,8 +48,8 @@ export default function Footer() {
               </svg>
             </motion.a>
           </div>
-          <div className="border-t border-gray-800 pt-8">
-            <p className="text-gray-500 text-sm">
+          <div className="border-t border-slate-200/50 dark:border-gray-800 pt-8">
+            <p className="text-slate-500 dark:text-gray-400 text-sm">
               © {new Date().getFullYear()} Portfolio. All rights reserved.
             </p>
           </div>
