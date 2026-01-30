@@ -263,9 +263,9 @@ export default function Skills() {
         </motion.nav>
 
         <div
-          className={`grid gap-6 sm:gap-8 ${
+          className={`grid gap-5 sm:gap-6 ${
             categoriesToShow.length === 1
-              ? 'max-w-2xl mx-auto'
+              ? 'max-w-xl mx-auto'
               : 'md:grid-cols-3'
           }`}
         >
@@ -278,12 +278,12 @@ export default function Skills() {
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: categoryIndex * 0.08 }}
-                className={`relative rounded-2xl border border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-900/30 p-6 sm:p-8 transition-colors hover:border-gray-200 dark:hover:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-900/50 ${isPopoverOpen ? 'z-10' : ''}`}
+                className={`relative rounded-xl border border-gray-200/80 dark:border-gray-700/80 bg-white/80 dark:bg-gray-800/40 shadow-sm p-5 sm:p-6 transition-all hover:shadow-md hover:border-gray-300 dark:hover:border-gray-600 ${isPopoverOpen ? 'z-10' : ''}`}
               >
-                <h3 className="text-xl sm:text-2xl font-semibold text-gray-900 dark:text-white mb-6 text-center tracking-tight">
+                <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-4 sm:mb-5 text-center tracking-tight border-b border-gray-100 dark:border-gray-700/80 pb-3">
                   {category.title}
                 </h3>
-                <div className="flex flex-wrap gap-3 sm:gap-4 justify-center">
+                <div className="grid grid-cols-3 sm:grid-cols-4 gap-2.5 sm:gap-3 justify-items-center">
                   {category.skills.map((skill, skillIndex) => {
                     const logoPath = getSkillLogo(skill)
                     const logoScale = logoPath ? getSkillLogoScale(skill) : 1
@@ -299,14 +299,14 @@ export default function Skills() {
                           duration: 0.3,
                           delay: categoryIndex * 0.15 + skillIndex * 0.04,
                         }}
-                        whileHover={{ scale: 1.08, y: -4 }}
-                        className="group relative w-fit shrink-0"
+                        whileHover={{ scale: 1.06, y: -2 }}
+                        className="group relative w-full max-w-[4.5rem] sm:max-w-[5rem] aspect-square justify-self-center"
                         onHoverStart={() => setHoveredKey(tooltipKey)}
                         onHoverEnd={() => setHoveredKey(null)}
                       >
                         {logoPath ? (
-                          <div className="w-16 h-16 sm:w-[72px] sm:h-[72px] min-w-16 min-h-16 sm:min-w-[72px] sm:min-h-[72px] bg-white dark:bg-gray-800/80 rounded-xl p-2 border border-gray-100 dark:border-gray-700 flex items-center justify-center hover:border-teal-300 dark:hover:border-teal-600 transition-colors shadow-sm">
-                            <div className="w-10 h-10 sm:w-12 sm:h-12 min-w-10 min-h-10 sm:min-w-12 sm:min-h-12 flex items-center justify-center overflow-hidden">
+                          <div className="w-full aspect-square bg-white dark:bg-gray-800/80 rounded-lg p-1.5 sm:p-2 border border-gray-200/80 dark:border-gray-600/80 flex items-center justify-center hover:border-teal-400/60 dark:hover:border-teal-500/60 transition-colors shadow-sm">
+                            <div className="w-full h-full flex items-center justify-center overflow-hidden">
                               <div
                                 className="flex items-center justify-center w-full h-full"
                                 style={{ transform: `scale(${logoScale})` }}
@@ -324,8 +324,8 @@ export default function Skills() {
                             </div>
                           </div>
                         ) : (
-                          <div className={`px-3.5 py-2 sm:px-4 sm:py-2.5 bg-gradient-to-r ${category.color} text-white rounded-xl text-sm font-semibold shadow-sm hover:shadow transition-all cursor-default`}>
-                            {skill}
+                          <div className={`w-full aspect-square flex items-center justify-center px-2 py-2 bg-gradient-to-r ${category.color} text-white rounded-lg text-xs sm:text-sm font-semibold shadow-sm hover:shadow transition-all cursor-default`}>
+                            <span className="truncate text-center">{skill}</span>
                           </div>
                         )}
                         <AnimatePresence>
