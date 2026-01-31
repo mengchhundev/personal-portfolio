@@ -1,10 +1,14 @@
 'use client'
 
 import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import Image from 'next/image'
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 
-/** 3D floating shapes for Education section background */
+/** 3D floating shapes for Education section background - hidden when user prefers reduced motion */
 function Education3DBackground() {
+  const prefersReducedMotion = useReducedMotion()
+  if (prefersReducedMotion) return null
+
   return (
     <div
       className="absolute inset-0 overflow-hidden pointer-events-none"
@@ -118,26 +122,40 @@ const education = [
   {
     title: "Bachelor's degree in Computer Science",
     institution: "Royal University of Phnom Penh",
+    logo: "/assets/education/rupp_logo.png",
     status: "Graduated",
-    dateRange: "2015 – 2019",
+    dateRange: "2019 – 2023",
     detail: "Core focus on algorithms, data structures, and software engineering fundamentals.",
     keyTopics: ["Algorithms & data structures", "Software engineering", "Database systems"],
     type: "degree",
   },
   {
+    title: "C/C++, Java",
+    institution: "Ant Training",
+    logo: "/assets/education/ant-training-logo.png",
+    status: "Graduated",
+    dateRange: "2022 – 2022",
+    detail: "Programming fundamentals and object-oriented development in C, C++, and Java.",
+    keyTopics: ["C/C++", "Java"],
+    type: "training",
+  },
+  {
     title: "IT Professional",
     institution: "Korean Software HRD Center",
+    logo: "/assets/education/kshrd-logo.png",
     status: "Graduated",
-    dateRange: "2019 – 2020",
+    dateRange: "2023 – 2023",
     detail: "Hands-on training in full-stack development, databases, and DevOps practices.",
     keyTopics: ["Full-stack development", "Databases", "DevOps foundations"],
     type: "training",
   },
+  
   {
     title: "DevOps Engineer",
     institution: "Institute of Science and Technology Advanced Development",
+    logo: "/assets/education/istad-logo.png",
     status: "In progress",
-    dateRange: "2024 – Present",
+    dateRange: "2025 – Present",
     detail: "CI/CD, container orchestration, cloud platforms, and infrastructure as code.",
     keyTopics: ["CI/CD pipelines", "Containers & orchestration", "Cloud & IaC"],
     type: "certification",
@@ -153,15 +171,6 @@ const statusConfig: Record<string, { label: string; className: string }> = {
     label: "In progress",
     className: "text-blue-600 dark:text-blue-400 bg-blue-500/10 dark:bg-blue-500/20",
   },
-}
-
-const iconPaths: Record<string, string> = {
-  degree:
-    "M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253",
-  training:
-    "M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z",
-  certification:
-    "M9 12l2 2 4-4M5.936 6.936a2 2 0 012.828 0l1.414 1.414a2 2 0 002.828 0l.586-.586a2 2 0 012.828 0l1.414 1.414a2 2 0 010 2.828l-.586.586a2 2 0 000 2.828l1.414 1.414a2 2 0 010 2.828l-1.414 1.414a2 2 0 01-2.828 0l-.586-.586a2 2 0 00-2.828 0l-1.414 1.414a2 2 0 01-2.828 0l-1.414-1.414a2 2 0 010-2.828l1.414-1.414a2 2 0 000-2.828l-1.414-1.414a2 2 0 010-2.828z",
 }
 
 export default function Education() {
@@ -206,7 +215,6 @@ export default function Education() {
             {education.map((edu, index) => {
               const isExpanded = expandedIndex === index
               const statusStyle = statusConfig[edu.status] ?? statusConfig["Graduated"]
-              const iconPath = iconPaths[edu.type] ?? iconPaths.degree
 
               return (
                 <motion.li
@@ -245,23 +253,18 @@ export default function Education() {
                           </span>
                         </div>
 
-                        {/* Icon + title row */}
+                        {/* Logo + title row */}
                         <div className="flex items-start gap-5">
-                          <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-teal-500/10 dark:bg-teal-500/20 flex items-center justify-center">
-                            <svg
-                              className="w-6 h-6 text-teal-600 dark:text-teal-400"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                              strokeWidth={1.8}
-                              aria-hidden
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d={iconPath}
-                              />
-                            </svg>
+                          <div className="flex-shrink-0 w-14 h-14 sm:w-16 sm:h-16 rounded-xl bg-white dark:bg-gray-800/80 border border-gray-100 dark:border-gray-700 flex items-center justify-center overflow-hidden p-1.5">
+                            <Image
+                              src={edu.logo}
+                              alt={`${edu.institution} logo`}
+                              width={64}
+                              height={64}
+                              sizes="64px"
+                              loading="lazy"
+                              className="w-full h-full object-contain"
+                            />
                           </div>
                           <div className="min-w-0 flex-1">
                             <h3 className="text-xl sm:text-2xl font-semibold text-gray-900 dark:text-white tracking-tight leading-tight">

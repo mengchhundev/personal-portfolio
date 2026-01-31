@@ -1,25 +1,44 @@
 'use client'
 
 import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import Image from 'next/image'
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 
 const experience = [
   {
+    position: "Assistant Trainer",
+    company: "Ant Training",
+    logo: "/assets/education/ant-training-logo.png",
+    duration: "6 months",
+    dateRange: "2022 – 2022",
+    description: "Assisted in delivering training courses, supporting instructors and students in C/C++ and Java programming.",
+    highlights: [
+      "Assisted with training course delivery",
+      "Supported students in C/C++ and Java",
+      "Helped prepare materials and exercises",
+    ],
+  },
+  {
     position: "Software Engineer",
     company: "KOSIGN (Cambodia) Investment Co., Ltd.",
+    logo: "/assets/education/kosign-logo.jpg",
     duration: "2 years",
-    dateRange: "2022 – Present",
+    dateRange: "2024 – Present",
     description: "Developed and maintained software solutions using modern technologies and best practices.",
     highlights: [
       "Built and maintained CI/CD pipelines",
       "Collaborated with cross-functional teams",
       "Improved code quality and deployment processes",
     ],
-  },
+  }
+  
 ]
 
-/** 3D floating shapes for Work Experience section background */
+/** 3D floating shapes for Work Experience section background - hidden when user prefers reduced motion */
 function Experience3DBackground() {
+  const prefersReducedMotion = useReducedMotion()
+  if (prefersReducedMotion) return null
+
   return (
     <div
       className="absolute inset-0 overflow-hidden pointer-events-none"
@@ -134,21 +153,33 @@ export default function WorkExperience() {
                         </div>
 
                         <div className="flex items-start gap-5">
-                          <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-teal-500/10 dark:bg-teal-500/20 flex items-center justify-center">
-                            <svg
-                              className="w-6 h-6 text-teal-600 dark:text-teal-400"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                              strokeWidth={1.8}
-                              aria-hidden
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M21 13.255A23.931 23.931 0 0112 15c-2.996 0-5.7-1.255-7.5-3.255M15 6v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                          <div className="flex-shrink-0 w-14 h-14 sm:w-16 sm:h-16 rounded-xl bg-white dark:bg-gray-800/80 border border-gray-100 dark:border-gray-700 flex items-center justify-center overflow-hidden p-1.5">
+                            {exp.logo ? (
+                              <Image
+                                src={exp.logo}
+                                alt={`${exp.company} logo`}
+                                width={64}
+                                height={64}
+                                sizes="64px"
+                                loading="lazy"
+                                className="w-full h-full object-contain"
                               />
-                            </svg>
+                            ) : (
+                              <svg
+                                className="w-6 h-6 text-teal-600 dark:text-teal-400"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                                strokeWidth={1.8}
+                                aria-hidden
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  d="M21 13.255A23.931 23.931 0 0112 15c-2.996 0-5.7-1.255-7.5-3.255M15 6v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                                />
+                              </svg>
+                            )}
                           </div>
                           <div className="min-w-0 flex-1">
                             <h3 className="text-xl sm:text-2xl font-semibold text-gray-900 dark:text-white tracking-tight leading-tight">

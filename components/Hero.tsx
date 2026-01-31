@@ -7,7 +7,7 @@ import Image from 'next/image'
 const TAGLINES = [
   'Passionate about automation, cloud infrastructure, and continuous integration',
   'Building reliable pipelines and scalable systems',
-  'Software delivery · Infrastructure as Code · CI/CD · Kubernetes',
+  'Infrastructure as Code · CI/CD · Kubernetes',
 ]
 
 export default function Hero() {
@@ -70,7 +70,7 @@ export default function Hero() {
                 transition={{ delay: 0.1 }}
                 className="text-xs font-medium uppercase tracking-[0.2em] text-teal-600 dark:text-teal-400"
               >
-                Software and DevOps Engineer
+                DevOps Engineer
               </motion.p>
 
               <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[2.75rem] font-bold tracking-tight text-slate-900 dark:text-white leading-[1.2]">
@@ -81,7 +81,7 @@ export default function Hero() {
                   className="block"
                 >
                   Building reliable{' '}
-                  <span className="gradient-text">software & infrastructure</span>
+                  <span className="gradient-text">infrastructure</span>
                   {' '}that scales.
                 </motion.span>
               </h1>
@@ -169,7 +169,7 @@ export default function Hero() {
               <div className="absolute inset-[5px] rounded-full overflow-hidden z-10 shadow-inner ring-1 ring-slate-200/40 dark:ring-slate-700/40">
                 <Image
                   src="/assets/logo/my-profile.jpg"
-                  alt="Software and DevOps Engineer - profile photo"
+                  alt="DevOps Engineer - profile photo"
                   fill
                   sizes="(max-width: 640px) 208px, (max-width: 1024px) 256px, 288px"
                   className="object-cover"

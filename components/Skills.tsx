@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import Image from 'next/image'
 
 const getSkillLogo = (skillName: string): string | null => {
@@ -145,8 +145,11 @@ const skillCategories = [
 const TAB_OPTIONS = ['All', 'DevOps', 'Work', 'HRD'] as const
 const TAB_MAP = { All: -1, DevOps: 0, Work: 1, HRD: 2 } as const
 
-/** 3D floating shapes for Skills section background */
+/** 3D floating shapes for Skills section background - hidden when user prefers reduced motion */
 function Skills3DBackground() {
+  const prefersReducedMotion = useReducedMotion()
+  if (prefersReducedMotion) return null
+
   return (
     <div
       className="absolute inset-0 overflow-hidden pointer-events-none"
@@ -314,8 +317,10 @@ export default function Skills() {
                                 <Image
                                   src={logoPath}
                                   alt={skill}
-                                  width={192}
-                                  height={192}
+                                  width={80}
+                                  height={80}
+                                  sizes="(max-width: 640px) 25vw, 80px"
+                                  loading="lazy"
                                   className="object-contain max-w-full max-h-full w-full h-full"
                                   title=""
                                   unoptimized={logoPath.endsWith('.svg')}
@@ -347,6 +352,8 @@ export default function Skills() {
                                           alt=""
                                           width={40}
                                           height={40}
+                                          sizes="40px"
+                                          loading="lazy"
                                           className="object-contain w-full h-full"
                                           unoptimized={logoPath.endsWith('.svg')}
                                         />

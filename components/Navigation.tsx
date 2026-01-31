@@ -1,9 +1,31 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 const SECTIONS = ['home', 'education', 'experience', 'skills'] as const
+
+function useThrottledScroll(callback: () => void) {
+  const rafRef = useRef<number | null>(null)
+  const callbackRef = useRef(callback)
+  callbackRef.current = callback
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (rafRef.current) return
+      rafRef.current = requestAnimationFrame(() => {
+        callbackRef.current()
+        rafRef.current = null
+      })
+    }
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    callback()
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      if (rafRef.current) cancelAnimationFrame(rafRef.current)
+    }
+  }, [])
+}
 
 export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false)
@@ -11,16 +33,13 @@ export default function Navigation() {
   const [activeSection, setActiveSection] = useState<string>('home')
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50)
-      const totalHeight = document.documentElement.scrollHeight - window.innerHeight
-      setScrollProgress(totalHeight > 0 ? (window.scrollY / totalHeight) * 100 : 0)
-    }
-    window.addEventListener('scroll', handleScroll)
-    handleScroll()
-    return () => window.removeEventListener('scroll', handleScroll)
+  const updateScroll = useCallback(() => {
+    setIsScrolled(window.scrollY > 50)
+    const totalHeight = document.documentElement.scrollHeight - window.innerHeight
+    setScrollProgress(totalHeight > 0 ? (window.scrollY / totalHeight) * 100 : 0)
   }, [])
+
+  useThrottledScroll(updateScroll)
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -56,10 +75,9 @@ export default function Navigation() {
         initial={false}
         animate={{ opacity: isScrolled ? 1 : 0.7 }}
       >
-        <motion.div
-          className="scroll-progress h-full"
+        <div
+          className="scroll-progress h-full transition-[width] duration-150 ease-out"
           style={{ width: `${scrollProgress}%` }}
-          transition={{ type: 'spring', stiffness: 100, damping: 30 }}
         />
       </motion.div>
 
@@ -81,7 +99,7 @@ export default function Navigation() {
               onClick={() => scrollToSection('home')}
               className="text-xl font-bold bg-gradient-to-r from-emerald-600 via-teal-600 to-blue-600 bg-clip-text text-transparent dark:from-emerald-400 dark:via-teal-400 dark:to-blue-400"
             >
-              Portfolio
+              Chhun.dev
             </motion.button>
 
             {/* Desktop nav with active indicator */}
