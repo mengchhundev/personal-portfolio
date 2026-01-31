@@ -19,6 +19,7 @@ const getSkillLogo = (skillName: string): string | null => {
     'Jenkins': '/assets/logo/Jenkins-logo.png',
     'SonarQube': '/assets/logo/sonarqube-logo.png',
     'Ansible': '/assets/logo/ansible-logo.png',
+    'Helm': '/assets/logo/helm-logo.svg',
     'Shell script': '/assets/logo/shell-script-logo.png',
     // Work Experience
     'Spring Boot': '/assets/logo/work-experience/spring-boot-logo.svg.png',
@@ -52,6 +53,7 @@ const getSkillLogoScale = (skillName: string): number => {
     'Docker': 1.2,
     'Shell script': 1.35,
     'GCP': 1.3,
+    'Helm': 1.1,
     // Work Experience
     'Spring Boot': 1,
     'PostgreSQL': 1.3,
@@ -83,6 +85,7 @@ const skillDefinitions: { [key: string]: string } = {
   'K8s': 'Kubernetes — container orchestration platform for deploying and scaling apps.',
   'Kubernetes': 'Container orchestration platform for automating deployment and scaling.',
   'ArgoCD': 'Declarative GitOps continuous delivery tool for Kubernetes.',
+  'Helm': 'Kubernetes package manager for defining, installing, and upgrading applications as charts.',
   'Spring Boot': 'Java framework for building production-ready applications and microservices.',
   'PostgreSQL': 'Open-source relational database with advanced features and reliability.',
   'Next.js': 'React framework for production with SSR, static generation, and API routes.',
@@ -110,6 +113,7 @@ const skillCategories = [
       "Jenkins",
       "SonarQube",
       "Ansible",
+      "Helm",
       "K8s",
       "ArgoCD",
     ],
