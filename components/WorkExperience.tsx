@@ -47,12 +47,12 @@ function Experience3DBackground() {
     >
       <div className="absolute inset-0">
         <motion.div
-          className="absolute top-[20%] right-[12%] w-28 h-28 sm:w-36 sm:h-36"
+          className="absolute top-[20%] right-[12%] w-14 h-14 sm:w-20 sm:h-20"
           style={{ perspective: '1200px', transformStyle: 'preserve-3d' }}
-          animate={{ rotateY: [0, 360], rotateX: [0, 12, 0] }}
+          animate={{ rotateY: [0, 360], rotateX: [0, 360] }}
           transition={{
             rotateY: { duration: 28, repeat: Infinity, ease: 'linear' },
-            rotateX: { duration: 9, repeat: Infinity, ease: 'easeInOut' },
+            rotateX: { duration: 24, repeat: Infinity, ease: 'linear' },
           }}
         >
           <div className="w-full h-full relative" style={{ transformStyle: 'preserve-3d' }}>
@@ -75,7 +75,7 @@ function Experience3DBackground() {
           </div>
         </motion.div>
         <motion.div
-          className="absolute bottom-[25%] left-[10%] w-20 h-20 sm:w-24 sm:h-24 rounded-full border-2 border-emerald-300/20 dark:border-emerald-500/15 bg-emerald-400/10 dark:bg-emerald-500/10 blur-[1px]"
+          className="absolute bottom-[25%] left-[10%] w-12 h-12 sm:w-14 sm:h-14 rounded-full border-2 border-emerald-300/20 dark:border-emerald-500/15 bg-emerald-400/10 dark:bg-emerald-500/10 blur-[1px]"
           animate={{ scale: [1, 1.12, 1], opacity: [0.35, 0.6, 0.35] }}
           transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
         />

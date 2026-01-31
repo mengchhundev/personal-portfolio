@@ -158,12 +158,12 @@ function Skills3DBackground() {
     >
       <div className="absolute inset-0">
         <motion.div
-          className="absolute bottom-[18%] left-[8%] w-24 h-24 sm:w-32 sm:h-32"
+          className="absolute bottom-[18%] left-[8%] w-14 h-14 sm:w-20 sm:h-20"
           style={{ perspective: '1200px', transformStyle: 'preserve-3d' }}
-          animate={{ rotateY: [0, -360], rotateX: [0, 10, 0] }}
+          animate={{ rotateY: [0, -360], rotateX: [0, -360] }}
           transition={{
             rotateY: { duration: 26, repeat: Infinity, ease: 'linear' },
-            rotateX: { duration: 8, repeat: Infinity, ease: 'easeInOut' },
+            rotateX: { duration: 22, repeat: Infinity, ease: 'linear' },
           }}
         >
           <div className="w-full h-full relative" style={{ transformStyle: 'preserve-3d' }}>
@@ -186,7 +186,7 @@ function Skills3DBackground() {
           </div>
         </motion.div>
         <motion.div
-          className="absolute top-[22%] right-[10%] w-16 h-16 sm:w-20 sm:h-20 rounded-full border-2 border-teal-300/20 dark:border-teal-500/15 bg-teal-400/10 dark:bg-teal-500/10 blur-[1px]"
+          className="absolute top-[22%] right-[10%] w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-teal-300/20 dark:border-teal-500/15 bg-teal-400/10 dark:bg-teal-500/10 blur-[1px]"
           animate={{ scale: [1, 1.1, 1], opacity: [0.4, 0.65, 0.4] }}
           transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
         />

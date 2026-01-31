@@ -18,16 +18,16 @@ function Education3DBackground() {
       <div className="absolute inset-0">
         {/* Floating cube 1 - top left */}
         <motion.div
-          className="absolute top-[15%] left-[10%] w-32 h-32 sm:w-40 sm:h-40"
+          className="absolute top-[15%] left-[10%] w-16 h-16 sm:w-24 sm:h-24"
           style={{ perspective: '1200px', transformStyle: 'preserve-3d' }}
           initial={{ rotateX: 0, rotateY: 0 }}
           animate={{
-            rotateX: [0, 15, 0],
+            rotateX: [0, 360],
             rotateY: [0, 360],
           }}
           transition={{
             rotateY: { duration: 24, repeat: Infinity, ease: 'linear' },
-            rotateX: { duration: 8, repeat: Infinity, ease: 'easeInOut' },
+            rotateX: { duration: 20, repeat: Infinity, ease: 'linear' },
           }}
         >
           <div
@@ -60,16 +60,16 @@ function Education3DBackground() {
 
         {/* Floating cube 2 - bottom right */}
         <motion.div
-          className="absolute bottom-[20%] right-[8%] w-24 h-24 sm:w-32 sm:h-32"
+          className="absolute bottom-[20%] right-[8%] w-14 h-14 sm:w-20 sm:h-20"
           style={{ perspective: '1200px', transformStyle: 'preserve-3d' }}
           initial={{ rotateX: 0, rotateY: 0 }}
           animate={{
-            rotateX: [0, -20, 0],
+            rotateX: [0, -360],
             rotateY: [0, -360],
           }}
           transition={{
             rotateY: { duration: 30, repeat: Infinity, ease: 'linear' },
-            rotateX: { duration: 10, repeat: Infinity, ease: 'easeInOut' },
+            rotateX: { duration: 26, repeat: Infinity, ease: 'linear' },
           }}
         >
           <div
@@ -102,7 +102,7 @@ function Education3DBackground() {
 
         {/* Floating orb / circle - center-right */}
         <motion.div
-          className="absolute top-[50%] right-[15%] w-20 h-20 sm:w-28 sm:h-28 rounded-full border-2 border-teal-300/20 dark:border-teal-500/15 bg-teal-400/10 dark:bg-teal-500/10 blur-[1px]"
+          className="absolute top-[50%] right-[15%] w-12 h-12 sm:w-14 sm:h-14 rounded-full border-2 border-teal-300/20 dark:border-teal-500/15 bg-teal-400/10 dark:bg-teal-500/10 blur-[1px]"
           animate={{
             scale: [1, 1.15, 1],
             opacity: [0.4, 0.7, 0.4],
