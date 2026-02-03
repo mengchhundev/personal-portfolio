@@ -50,7 +50,7 @@ const getSkillLogoScale = (skillName: string): number => {
     'Docker': 1.2,
     'Shell script': 1.35,
     'GCP': 1.3,
-    'Helm': 1.1,
+    'Helm': 1,
     'Spring Boot': 1,
     'PostgreSQL': 1.3,
     'Next.js': 1,

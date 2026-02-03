@@ -33,7 +33,7 @@ const education = [
     status: "Graduated",
     dateRange: "2023 – 2023",
     detail: "Hands-on training in full-stack development, databases, and DevOps practices.",
-    keyTopics: ["Full-stack development", "Databases", "DevOps foundations"],
+    keyTopics: ["Full-stack development", "Databases","Android development"],
     type: "training",
   },
   {

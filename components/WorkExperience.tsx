@@ -27,7 +27,7 @@ const experience = [
     dateRange: "2024 – Present",
     description: "Developed and maintained software solutions using modern technologies and best practices.",
     highlights: [
-      "Built and maintained CI/CD pipelines",
+      "Built and maintained SaaS applications",
       "Collaborated with cross-functional teams",
       "Improved code quality and deployment processes",
     ],
