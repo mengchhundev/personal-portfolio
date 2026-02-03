@@ -1,12 +1,12 @@
 'use client'
 
 import { useState } from 'react'
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import Image from 'next/image'
+import ScrollReveal from './ScrollReveal'
+import { SectionBackground } from '@/components/AnimatedBackgrounds'
 
 const getSkillLogo = (skillName: string): string | null => {
   const logoMap: { [key: string]: string } = {
-    // DevOps
     'Linux': '/assets/logo/linux-1024.png',
     'K8s': '/assets/logo/Kubernetes-Logo.wine.png',
     'Kubernetes': '/assets/logo/Kubernetes-Logo.wine.png',
@@ -21,14 +21,12 @@ const getSkillLogo = (skillName: string): string | null => {
     'Ansible': '/assets/logo/ansible-logo.png',
     'Helm': '/assets/logo/helm-logo.svg',
     'Shell script': '/assets/logo/shell-script-logo.png',
-    // Work Experience
     'Spring Boot': '/assets/logo/work-experience/spring-boot-logo.svg.png',
     'PostgreSQL': '/assets/logo/work-experience/postgresql-logo.png',
     'Next.js': '/assets/logo/work-experience/next-js-logo.png',
     'TypeScript': '/assets/logo/work-experience/typescript-logo.png',
     'JavaScript': '/assets/logo/work-experience/javascript-logo.png',
     'Jasper Report': '/assets/logo/work-experience/jaspersoft-logo.svg',
-    // Korean Software HRD Center (kshrd)
     'Java': '/assets/logo/kshrd/Java-Logo.png',
     'React.js': '/assets/logo/kshrd/react-logo.png',
     'HTML': '/assets/logo/kshrd/html-logo.png',
@@ -45,7 +43,6 @@ const getSkillLogo = (skillName: string): string | null => {
 
 const getSkillLogoScale = (skillName: string): number => {
   const scaleMap: { [key: string]: number } = {
-    // DevOps
     'Jenkins': 1.65,
     'K8s': 1.8,
     'Kubernetes': 1.8,
@@ -54,14 +51,12 @@ const getSkillLogoScale = (skillName: string): number => {
     'Shell script': 1.35,
     'GCP': 1.3,
     'Helm': 1.1,
-    // Work Experience
     'Spring Boot': 1,
     'PostgreSQL': 1.3,
     'Next.js': 1,
     'TypeScript': 1.1,
     'JavaScript': 2,
     'Jasper Report': 1,
-    // Korean Software HRD Center (kshrd)
     'Java': 2,
     'React.js': 1,
     'HTML': 1.1,
@@ -102,102 +97,23 @@ const skillDefinitions: { [key: string]: string } = {
 const skillCategories = [
   {
     title: "DevOps Engineer (Learning to present)",
-    skills: [
-      "Linux",
-      "Shell script",
-      "Docker",
-      "GitHub",
-      "GitLab",
-      "Nexus",
-      "GCP",
-      "Jenkins",
-      "SonarQube",
-      "Ansible",
-      "Helm",
-      "K8s",
-      "ArgoCD",
-    ],
+    skills: ["Linux", "Shell script", "Docker", "GitHub", "GitLab", "Nexus", "GCP", "Jenkins", "SonarQube", "Ansible", "Helm", "K8s", "ArgoCD"],
     color: "from-emerald-500 to-teal-500",
   },
   {
     title: "Work Experience",
-    skills: [
-      "Spring Boot",
-      "PostgreSQL",
-      "Next.js",
-      "TypeScript",
-      "JavaScript",
-      "Jasper Report",
-    ],
+    skills: ["Spring Boot", "PostgreSQL", "Next.js", "TypeScript", "JavaScript", "Jasper Report"],
     color: "from-teal-500 to-blue-500",
   },
   {
     title: "Korean Software HRD Center",
-    skills: [
-      "Java",
-      "Spring Boot",
-      "PostgreSQL",
-      "React.js",
-      "HTML",
-      "CSS",
-      "Android",
-    ],
+    skills: ["Java", "Spring Boot", "PostgreSQL", "React.js", "HTML", "CSS", "Android"],
     color: "from-amber-500 to-orange-500",
   },
 ]
 
 const TAB_OPTIONS = ['All', 'DevOps', 'Work', 'HRD'] as const
 const TAB_MAP = { All: -1, DevOps: 0, Work: 1, HRD: 2 } as const
-
-/** 3D floating shapes for Skills section background - hidden when user prefers reduced motion */
-function Skills3DBackground() {
-  const prefersReducedMotion = useReducedMotion()
-  if (prefersReducedMotion) return null
-
-  return (
-    <div
-      className="absolute inset-0 overflow-hidden pointer-events-none"
-      style={{ perspective: '1200px' }}
-      aria-hidden
-    >
-      <div className="absolute inset-0">
-        <motion.div
-          className="absolute bottom-[18%] left-[8%] w-14 h-14 sm:w-20 sm:h-20"
-          style={{ perspective: '1200px', transformStyle: 'preserve-3d' }}
-          animate={{ rotateY: [0, -360], rotateX: [0, -360] }}
-          transition={{
-            rotateY: { duration: 26, repeat: Infinity, ease: 'linear' },
-            rotateX: { duration: 22, repeat: Infinity, ease: 'linear' },
-          }}
-        >
-          <div className="w-full h-full relative" style={{ transformStyle: 'preserve-3d' }}>
-            {['front', 'back', 'right', 'left', 'top', 'bottom'].map((face) => (
-              <div
-                key={face}
-                className="absolute inset-0 border-2 border-teal-300/20 dark:border-teal-500/15 rounded-lg bg-teal-400/5 dark:bg-teal-500/5"
-                style={{
-                  transformStyle: 'preserve-3d',
-                  transform:
-                    face === 'front' ? 'translateZ(0.75rem)' :
-                    face === 'back' ? 'rotateY(180deg) translateZ(0.75rem)' :
-                    face === 'right' ? 'rotateY(90deg) translateZ(0.75rem)' :
-                    face === 'left' ? 'rotateY(-90deg) translateZ(0.75rem)' :
-                    face === 'top' ? 'rotateX(90deg) translateZ(0.75rem)' :
-                    'rotateX(-90deg) translateZ(0.75rem)',
-                }}
-              />
-            ))}
-          </div>
-        </motion.div>
-        <motion.div
-          className="absolute top-[22%] right-[10%] w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-teal-300/20 dark:border-teal-500/15 bg-teal-400/10 dark:bg-teal-500/10 blur-[1px]"
-          animate={{ scale: [1, 1.1, 1], opacity: [0.4, 0.65, 0.4] }}
-          transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
-        />
-      </div>
-    </div>
-  )
-}
 
 export default function Skills() {
   const [hoveredKey, setHoveredKey] = useState<string | null>(null)
@@ -214,16 +130,14 @@ export default function Skills() {
       className="relative py-20 sm:py-28 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-slate-50/60 via-white to-teal-50/40 dark:from-gray-950 dark:via-gray-900/80 dark:to-gray-950 overflow-hidden"
       aria-labelledby="skills-heading"
     >
-      <Skills3DBackground />
+      <SectionBackground variant="skills" />
 
-      <div className="relative z-10 max-w-5xl mx-auto">
-        <motion.header
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="mb-12 sm:mb-16 text-center sm:text-left"
-        >
+      <ScrollReveal
+        rootMargin="-50px 0px"
+        className="relative z-10 max-w-5xl mx-auto parent-reveal"
+        visibleClass="is-visible"
+      >
+        <header className="mb-12 sm:mb-16 text-center sm:text-left animate-fade-in-up">
           <h2
             id="skills-heading"
             className="text-3xl sm:text-4xl font-semibold tracking-tight text-gray-900 dark:text-white mb-3"
@@ -233,23 +147,18 @@ export default function Skills() {
           <p className="text-base text-gray-500 dark:text-gray-400 max-w-xl">
             Technologies and tools I work with
           </p>
-        </motion.header>
+        </header>
 
-        <motion.nav
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="flex flex-wrap justify-center sm:justify-start gap-2 mb-10"
+        <nav
+          className="flex flex-wrap justify-center sm:justify-start gap-2 mb-10 animate-fade-in-up delay-100"
           aria-label="Skill categories"
         >
           {TAB_OPTIONS.map((tab) => (
-            <motion.button
+            <button
               key={tab}
               type="button"
               onClick={() => setActiveTab(tab)}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className={`relative px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+              className={`btn-scale relative px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${
                 activeTab === tab
                   ? 'text-white'
                   : 'text-gray-600 dark:text-gray-400 hover:text-teal-600 dark:hover:text-teal-400 bg-white dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 hover:border-teal-200 dark:hover:border-teal-800'
@@ -258,16 +167,12 @@ export default function Skills() {
               aria-label={`Show ${tab} skills`}
             >
               {activeTab === tab && (
-                <motion.span
-                  layoutId="skills-tab"
-                  className="absolute inset-0 bg-teal-500 dark:bg-teal-600 rounded-lg -z-10"
-                  transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                />
+                <span className="absolute inset-0 bg-teal-500 dark:bg-teal-600 rounded-lg -z-10 transition-all duration-200" />
               )}
               {tab}
-            </motion.button>
+            </button>
           ))}
-        </motion.nav>
+        </nav>
 
         <div
           className={`grid gap-5 sm:gap-6 ${
@@ -280,12 +185,10 @@ export default function Skills() {
             const globalCategoryIndex = activeTab === 'All' ? categoryIndex : TAB_MAP[activeTab]
             const isPopoverOpen = hoveredKey !== null && hoveredKey.startsWith(`${globalCategoryIndex}-`)
             return (
-              <motion.article
+              <article
                 key={activeTab + categoryIndex}
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: categoryIndex * 0.08 }}
-                className={`relative rounded-xl border border-gray-200/80 dark:border-gray-700/80 bg-white/80 dark:bg-gray-800/40 shadow-sm p-5 sm:p-6 transition-all hover:shadow-md hover:border-gray-300 dark:hover:border-gray-600 ${isPopoverOpen ? 'z-10' : ''}`}
+                className={`relative rounded-xl border border-gray-200/80 dark:border-gray-700/80 bg-white/80 dark:bg-gray-800/40 shadow-sm p-5 sm:p-6 transition-all hover:shadow-md hover:border-gray-300 dark:hover:border-gray-600 animate-fade-in-up ${isPopoverOpen ? 'z-10' : ''}`}
+                style={{ transitionDelay: `${categoryIndex * 80}ms`, transitionDuration: '0.4s' }}
               >
                 <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-4 sm:mb-5 text-center tracking-tight border-b border-gray-100 dark:border-gray-700/80 pb-3">
                   {category.title}
@@ -297,93 +200,81 @@ export default function Skills() {
                     const tooltipKey = `${globalCategoryIndex}-${skillIndex}`
 
                     return (
-                      <motion.div
+                      <div
                         key={skillIndex}
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        viewport={{ once: true }}
-                        transition={{
-                          duration: 0.3,
-                          delay: categoryIndex * 0.15 + skillIndex * 0.04,
-                        }}
-                        whileHover={{ scale: 1.06, y: -2 }}
                         className="group relative w-full max-w-[4.5rem] sm:max-w-[5rem] aspect-square justify-self-center"
-                        onHoverStart={() => setHoveredKey(tooltipKey)}
-                        onHoverEnd={() => setHoveredKey(null)}
+                        onMouseEnter={() => setHoveredKey(tooltipKey)}
+                        onMouseLeave={() => setHoveredKey(null)}
                       >
-                        {logoPath ? (
-                          <div className="w-full aspect-square bg-white dark:bg-gray-800/80 rounded-lg p-1.5 sm:p-2 border border-gray-200/80 dark:border-gray-600/80 flex items-center justify-center hover:border-teal-400/60 dark:hover:border-teal-500/60 transition-colors shadow-sm">
-                            <div className="w-full h-full flex items-center justify-center overflow-hidden">
-                              <div
-                                className="flex items-center justify-center w-full h-full"
-                                style={{ transform: `scale(${logoScale})` }}
-                              >
-                                <Image
-                                  src={logoPath}
-                                  alt={skill}
-                                  width={80}
-                                  height={80}
-                                  sizes="(max-width: 640px) 25vw, 80px"
-                                  loading="lazy"
-                                  className="object-contain max-w-full max-h-full w-full h-full"
-                                  title=""
-                                  unoptimized={logoPath.endsWith('.svg')}
-                                />
-                              </div>
-                            </div>
-                          </div>
-                        ) : (
-                          <div className={`w-full aspect-square flex items-center justify-center px-2 py-2 bg-gradient-to-r ${category.color} text-white rounded-lg text-xs sm:text-sm font-semibold shadow-sm hover:shadow transition-all cursor-default`}>
-                            <span className="truncate text-center">{skill}</span>
-                          </div>
-                        )}
-                        <AnimatePresence>
-                          {hoveredKey === tooltipKey && (
-                            <motion.div
-                              initial={{ opacity: 0, y: 6, scale: 0.96 }}
-                              animate={{ opacity: 1, y: 0, scale: 1 }}
-                              exit={{ opacity: 0, y: 4, scale: 0.98 }}
-                              transition={{ duration: 0.18, ease: [0.25, 0.46, 0.45, 0.94] }}
-                              className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 z-20 pointer-events-none w-64 sm:w-72 origin-bottom"
-                            >
-                              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl ring-1 ring-gray-200 dark:ring-gray-700 overflow-visible">
-                                <div className="p-4">
-                                  <div className="flex items-center gap-3 mb-3">
-                                    {logoPath && (
-                                      <div className="w-10 h-10 flex-shrink-0 rounded-lg bg-gray-100 dark:bg-gray-700 flex items-center justify-center overflow-hidden">
-                                        <Image
-                                          src={logoPath}
-                                          alt=""
-                                          width={40}
-                                          height={40}
-                                          sizes="40px"
-                                          loading="lazy"
-                                          className="object-contain w-full h-full"
-                                          unoptimized={logoPath.endsWith('.svg')}
-                                        />
-                                      </div>
-                                    )}
-                                    <h4 className="font-semibold text-gray-900 dark:text-white text-sm sm:text-base">
-                                      {skill}
-                                    </h4>
-                                  </div>
-                                  <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
-                                    {skillDefinitions[skill] ?? `${skill} — technology or tool.`}
-                                  </p>
+                        <div className="skill-card w-full h-full flex flex-col items-center justify-center transition-all duration-300 ease-out hover:scale-105 hover:-translate-y-0.5">
+                          {logoPath ? (
+                            <div className="w-full aspect-square bg-white dark:bg-gray-800/80 rounded-lg p-1.5 sm:p-2 border border-gray-200/80 dark:border-gray-600/80 flex items-center justify-center hover:border-teal-400/60 dark:hover:border-teal-500/60 transition-colors shadow-sm">
+                              <div className="w-full h-full flex items-center justify-center overflow-hidden">
+                                <div
+                                  className="flex items-center justify-center w-full h-full"
+                                  style={{ transform: `scale(${logoScale})` }}
+                                >
+                                  <Image
+                                    src={logoPath}
+                                    alt={skill}
+                                    width={80}
+                                    height={80}
+                                    sizes="(max-width: 640px) 25vw, 80px"
+                                    loading="lazy"
+                                    className="object-contain max-w-full max-h-full w-full h-full"
+                                    title=""
+                                    unoptimized={logoPath.endsWith('.svg')}
+                                  />
                                 </div>
                               </div>
-                            </motion.div>
+                            </div>
+                          ) : (
+                            <div className={`w-full aspect-square flex items-center justify-center px-2 py-2 bg-gradient-to-r ${category.color} text-white rounded-lg text-xs sm:text-sm font-semibold shadow-sm hover:shadow transition-all cursor-default`}>
+                              <span className="truncate text-center">{skill}</span>
+                            </div>
                           )}
-                        </AnimatePresence>
-                      </motion.div>
+                        </div>
+
+                        {/* Tooltip */}
+                        <div
+                          className={`tooltip-popover absolute bottom-full left-1/2 -translate-x-1/2 mb-3 z-20 pointer-events-none w-64 sm:w-72 origin-bottom ${hoveredKey === tooltipKey ? 'is-visible' : ''}`}
+                        >
+                          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl ring-1 ring-gray-200 dark:ring-gray-700 overflow-visible">
+                            <div className="p-4">
+                              <div className="flex items-center gap-3 mb-3">
+                                {logoPath && (
+                                  <div className="w-10 h-10 flex-shrink-0 rounded-lg bg-gray-100 dark:bg-gray-700 flex items-center justify-center overflow-hidden">
+                                    <Image
+                                      src={logoPath}
+                                      alt=""
+                                      width={40}
+                                      height={40}
+                                      sizes="40px"
+                                      loading="lazy"
+                                      className="object-contain w-full h-full"
+                                      unoptimized={logoPath.endsWith('.svg')}
+                                    />
+                                  </div>
+                                )}
+                                <h4 className="font-semibold text-gray-900 dark:text-white text-sm sm:text-base">
+                                  {skill}
+                                </h4>
+                              </div>
+                              <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                                {skillDefinitions[skill] ?? `${skill} — technology or tool.`}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     )
                   })}
                 </div>
-              </motion.article>
+              </article>
             )
           })}
         </div>
-      </div>
+      </ScrollReveal>
     </section>
   )
 }

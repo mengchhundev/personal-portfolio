@@ -2,7 +2,8 @@
 
 import { useState } from 'react'
 import Image from 'next/image'
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
+import ScrollReveal from './ScrollReveal'
+import { SectionBackground } from '@/components/AnimatedBackgrounds'
 
 const experience = [
   {
@@ -31,58 +32,7 @@ const experience = [
       "Improved code quality and deployment processes",
     ],
   }
-  
 ]
-
-/** 3D floating shapes for Work Experience section background - hidden when user prefers reduced motion */
-function Experience3DBackground() {
-  const prefersReducedMotion = useReducedMotion()
-  if (prefersReducedMotion) return null
-
-  return (
-    <div
-      className="absolute inset-0 overflow-hidden pointer-events-none"
-      style={{ perspective: '1200px' }}
-      aria-hidden
-    >
-      <div className="absolute inset-0">
-        <motion.div
-          className="absolute top-[20%] right-[12%] w-14 h-14 sm:w-20 sm:h-20"
-          style={{ perspective: '1200px', transformStyle: 'preserve-3d' }}
-          animate={{ rotateY: [0, 360], rotateX: [0, 360] }}
-          transition={{
-            rotateY: { duration: 28, repeat: Infinity, ease: 'linear' },
-            rotateX: { duration: 24, repeat: Infinity, ease: 'linear' },
-          }}
-        >
-          <div className="w-full h-full relative" style={{ transformStyle: 'preserve-3d' }}>
-            {['front', 'back', 'right', 'left', 'top', 'bottom'].map((face) => (
-              <div
-                key={face}
-                className="absolute inset-0 border-2 border-teal-300/25 dark:border-teal-500/15 rounded-lg bg-teal-400/5 dark:bg-teal-500/5"
-                style={{
-                  transformStyle: 'preserve-3d',
-                  transform:
-                    face === 'front' ? 'translateZ(1rem)' :
-                    face === 'back' ? 'rotateY(180deg) translateZ(1rem)' :
-                    face === 'right' ? 'rotateY(90deg) translateZ(1rem)' :
-                    face === 'left' ? 'rotateY(-90deg) translateZ(1rem)' :
-                    face === 'top' ? 'rotateX(90deg) translateZ(1rem)' :
-                    'rotateX(-90deg) translateZ(1rem)',
-                }}
-              />
-            ))}
-          </div>
-        </motion.div>
-        <motion.div
-          className="absolute bottom-[25%] left-[10%] w-12 h-12 sm:w-14 sm:h-14 rounded-full border-2 border-emerald-300/20 dark:border-emerald-500/15 bg-emerald-400/10 dark:bg-emerald-500/10 blur-[1px]"
-          animate={{ scale: [1, 1.12, 1], opacity: [0.35, 0.6, 0.35] }}
-          transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
-        />
-      </div>
-    </div>
-  )
-}
 
 export default function WorkExperience() {
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null)
@@ -93,16 +43,14 @@ export default function WorkExperience() {
       className="relative py-20 sm:py-28 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-slate-50/80 via-white to-teal-50/40 dark:from-gray-950 dark:via-gray-900/80 dark:to-gray-950 overflow-hidden"
       aria-labelledby="experience-heading"
     >
-      <Experience3DBackground />
+      <SectionBackground variant="experience" />
 
-      <div className="relative z-10 max-w-4xl mx-auto">
-        <motion.header
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="mb-14 sm:mb-20 text-center sm:text-left"
-        >
+      <ScrollReveal
+        rootMargin="-50px 0px"
+        className="relative z-10 max-w-4xl mx-auto parent-reveal"
+        visibleClass="is-visible"
+      >
+        <header className="mb-14 sm:mb-20 text-center sm:text-left animate-fade-in-up">
           <h2
             id="experience-heading"
             className="text-3xl sm:text-4xl font-semibold tracking-tight text-gray-900 dark:text-white mb-3"
@@ -112,7 +60,7 @@ export default function WorkExperience() {
           <p className="text-base text-gray-500 dark:text-gray-400 max-w-xl">
             Professional journey and achievements
           </p>
-        </motion.header>
+        </header>
 
         <div className="relative">
           <div
@@ -125,13 +73,10 @@ export default function WorkExperience() {
               const hasHighlights = exp.highlights && exp.highlights.length > 0
 
               return (
-                <motion.li
+                <li
                   key={index}
-                  initial={{ opacity: 0, y: 16 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: index * 0.08 }}
-                  className="relative flex gap-6 sm:gap-10 py-10 sm:py-12 first:pt-0 last:pb-0"
+                  className="relative flex gap-6 sm:gap-10 py-10 sm:py-12 first:pt-0 last:pb-0 animate-fade-in-up"
+                  style={{ transitionDelay: `${index * 80}ms` }}
                 >
                   <div className="hidden sm:flex flex-shrink-0 w-8 sm:w-10 justify-center pt-3 z-[1]">
                     <div
@@ -206,55 +151,43 @@ export default function WorkExperience() {
                               className="inline-flex items-center gap-2 text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-teal-600 dark:hover:text-teal-400 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-gray-950 rounded"
                             >
                               {isExpanded ? "Hide key achievements" : "View key achievements"}
-                              <motion.span
-                                animate={{ rotate: isExpanded ? 180 : 0 }}
-                                transition={{ duration: 0.2 }}
-                                className="text-gray-400"
+                              <span
+                                className={`chevron-rotate text-gray-400 inline-block ${isExpanded ? 'expanded' : ''}`}
                               >
                                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                                 </svg>
-                              </motion.span>
+                              </span>
                             </button>
 
-                            <AnimatePresence mode="wait">
-                              {isExpanded && (
-                                <motion.div
-                                  id={`experience-detail-${index}`}
-                                  initial={{ height: 0, opacity: 0 }}
-                                  animate={{ height: "auto", opacity: 1 }}
-                                  exit={{ height: 0, opacity: 0 }}
-                                  transition={{ duration: 0.25 }}
-                                  className="overflow-hidden"
-                                >
-                                  <ul className="mt-4 space-y-2.5" role="list">
-                                    {exp.highlights!.map((item, i) => (
-                                      <motion.li
-                                        key={i}
-                                        initial={{ opacity: 0, x: -8 }}
-                                        animate={{ opacity: 1, x: 0 }}
-                                        transition={{ delay: i * 0.06 }}
-                                        className="flex items-start gap-3 text-sm text-gray-600 dark:text-gray-400"
-                                      >
-                                        <span className="w-1.5 h-1.5 rounded-full bg-teal-500 dark:bg-teal-400 mt-1.5 flex-shrink-0" />
-                                        <span>{item}</span>
-                                      </motion.li>
-                                    ))}
-                                  </ul>
-                                </motion.div>
-                              )}
-                            </AnimatePresence>
+                            <div
+                              id={`experience-detail-${index}`}
+                              className={`expandable-content ${isExpanded ? 'expanded' : ''}`}
+                            >
+                              <ul className={`mt-4 space-y-2.5 highlights-reveal ${isExpanded ? 'is-visible' : ''}`} role="list">
+                                {exp.highlights!.map((item, i) => (
+                                  <li
+                                    key={i}
+                                    className="flex items-start gap-3 text-sm text-gray-600 dark:text-gray-400 animate-slide-in-left"
+                                    style={{ transitionDelay: `${i * 60}ms` }}
+                                  >
+                                    <span className="w-1.5 h-1.5 rounded-full bg-teal-500 dark:bg-teal-400 mt-1.5 flex-shrink-0" />
+                                    <span>{item}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
                           </div>
                         )}
                       </div>
                     </article>
                   </div>
-                </motion.li>
+                </li>
               )
             })}
           </ul>
         </div>
-      </div>
+      </ScrollReveal>
     </section>
   )
 }

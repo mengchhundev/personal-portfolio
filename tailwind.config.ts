@@ -33,7 +33,6 @@ const config: Config = {
         "slide-in-right": "slideInRight 0.5s ease-out",
         "bounce-slow": "bounce 3s infinite",
         "float": "float 6s ease-in-out infinite",
-        "spin-wave": "spin-slow 6s linear infinite",
       },
       keyframes: {
         fadeIn: {
@@ -55,10 +54,6 @@ const config: Config = {
         float: {
           "0%, 100%": { transform: "translateY(0)" },
           "50%": { transform: "translateY(-10px)" },
-        },
-        "spin-slow": {
-          "0%": { transform: "rotate(0deg)" },
-          "100%": { transform: "rotate(360deg)" },
         },
       },
     },
