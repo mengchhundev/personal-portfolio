@@ -104,7 +104,7 @@ export default function Hero() {
                   View my work
                 </a>
                 <a
-                  href="https://github.com"
+                  href="https://github.com/mengchhundev"
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Open GitHub profile"
@@ -116,7 +116,7 @@ export default function Hero() {
                   GitHub
                 </a>
                 <a
-                  href="https://linkedin.com"
+                  href="https://www.linkedin.com/in/chheang-mengchhun-5198b7239/"
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Open LinkedIn profile"

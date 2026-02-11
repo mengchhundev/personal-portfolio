@@ -21,7 +21,7 @@ export default function Footer() {
           </p>
           <div className="flex justify-center gap-6 mb-10">
             <a
-              href="https://github.com"
+              href="https://github.com/mengchhundev"
               target="_blank"
               rel="noopener noreferrer"
               className="btn-scale flex h-12 w-12 items-center justify-center rounded-xl bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-slate-200/50 dark:border-gray-700 text-slate-600 dark:text-gray-400 hover:text-teal-600 dark:hover:text-teal-400 hover:border-teal-300 dark:hover:border-teal-500 hover:shadow-glow-sm hover:-translate-y-1 transition-all"
@@ -32,7 +32,7 @@ export default function Footer() {
               </svg>
             </a>
             <a
-              href="https://linkedin.com"
+              href="https://www.linkedin.com/in/chheang-mengchhun-5198b7239/"
               target="_blank"
               rel="noopener noreferrer"
               className="btn-scale flex h-12 w-12 items-center justify-center rounded-xl bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-slate-200/50 dark:border-gray-700 text-slate-600 dark:text-gray-400 hover:text-teal-600 dark:hover:text-teal-400 hover:border-teal-300 dark:hover:border-teal-500 hover:shadow-glow-sm hover:-translate-y-1 transition-all"
